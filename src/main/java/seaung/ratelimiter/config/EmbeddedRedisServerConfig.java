@@ -59,6 +59,8 @@ public class EmbeddedRedisServerConfig {
 
     /**
      * 해당 port를 사용중인 process를 확인하는 sh 실행
+     * 참고로 윈도우에서는 안됩니다. 맥/리눅스에서만 가능합니다.
+     * 윈도우에서 동일하게 사용하시려면 exe 프로세스 찾는 코드를 작성해야합니다.
      */
     private Process executeGrepProcessCommand(int port) throws IOException {
         String command = String.format("netstat -nat | grep LISTEN|grep %d", port);

@@ -13,6 +13,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Slf4j
 @Configuration
+@DependsOn({"embeddedRedisServerConfig"}) // 빈 초기화 순서 지정
 public class RedisConfig {
 
     @Value("${spring.redis.host}")

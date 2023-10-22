@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import seaung.ratelimiter.exception.RateLimiterException;
+import seaung.ratelimiter.tokenbucket.TokenBucketResolver;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -22,8 +23,12 @@ class MyControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
     @Autowired
     RedisTemplate<?, ?> redisTemplate;
+
+    @Autowired
+    TokenBucketResolver tokenBucketResolver;
 
     @AfterEach
     void tearDown() {
@@ -41,7 +46,7 @@ class MyControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("hello world!"));
+                .andExpect(content().string("hello world!, counter="+tokenBucketResolver.getAvailableTokens(key)));
     }
 
     @Test
@@ -56,7 +61,7 @@ class MyControllerTest {
                             .contentType(MediaType.APPLICATION_JSON))
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isOk())
-                    .andExpect(content().string("hello world!"));
+                    .andExpect(content().string("hello world!, counter="+tokenBucketResolver.getAvailableTokens(key)));
         }
 
         // then
@@ -66,5 +71,4 @@ class MyControllerTest {
                 .andExpect(status().isTooManyRequests())
                 .andExpect(content().string(RateLimiterException.TOO_MANY_REQUEST));
     }
-
 }

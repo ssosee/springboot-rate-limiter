@@ -42,6 +42,19 @@ class TokenBucketResolverTest {
     }
 
     @Test
+    @DisplayName("남은 토큰의 갯수를 반환한다.")
+    void getAvailableTokens() {
+        // given
+        String key = "1";
+
+        // when
+        long availableTokens = tokenBucketResolver.getAvailableTokens(key);
+
+        // then
+        assertThat(availableTokens).isEqualTo(100);
+    }
+
+    @Test
     @DisplayName("처리율 제한 장치의 정책을 위반하면 예외가 발생한다.")
     void checkBucketCounterException() {
         // given

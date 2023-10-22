@@ -20,8 +20,10 @@ public class RateLimiterConfig {
 
     @Value("${spring.redis.host}")
     private String redisHost;
+
     @Value("${spring.redis.port}")
     private int redisPort;
+
     @Value("${bucket.plan}")
     private String bucketPlan;
 
@@ -45,7 +47,7 @@ public class RateLimiterConfig {
 
     @Bean
     public BucketConfiguration bucketConfiguration() {
-        log.info("처리율 제한 장치 플랜={}", bucketPlan);
+        log.info("처리율 제한 장치 정책={}", bucketPlan);
         return BucketConfiguration.builder()
                 .addLimit(RatePlan.resolvePlan(bucketPlan))
                 .build();

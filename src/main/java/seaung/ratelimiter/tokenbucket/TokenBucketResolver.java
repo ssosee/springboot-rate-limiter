@@ -24,6 +24,11 @@ public class TokenBucketResolver {
         if(!bucket.tryConsume(1)) {
             throw new RateLimiterException(RateLimiterException.TOO_MANY_REQUEST);
         }
+
         return true;
+    }
+
+    public long getAvailableTokens(String key) {
+        return bucket(key).getAvailableTokens();
     }
 }
