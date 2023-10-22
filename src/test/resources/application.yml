@@ -1,10 +1,9 @@
 bucket:
-  plan: local
+  plan: test
 
 spring:
-  config:
-    activate:
-      on-profile: local
+  profiles:
+    active: test
 
   redis:
     host: localhost

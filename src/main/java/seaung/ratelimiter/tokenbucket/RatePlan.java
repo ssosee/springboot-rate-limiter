@@ -1,4 +1,4 @@
-package seaung.ratelimiter.plan;
+package seaung.ratelimiter.tokenbucket;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Refill;
@@ -14,7 +14,7 @@ public enum RatePlan {
     TEST("test") {
         @Override
         public Bandwidth getLimit() {
-            return Bandwidth.classic(100, Refill.intervally(100, Duration.ofSeconds(1)));
+            return Bandwidth.classic(100, Refill.intervally(100, Duration.ofMinutes(1)));
         }
     },
     LOCAL("local") {

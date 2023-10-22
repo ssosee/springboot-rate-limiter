@@ -9,28 +9,38 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import redis.embedded.RedisServer;
 
 @Slf4j
 @Configuration
-@Profile("local")
-public class EmbeddedRedisConfig {
+@Profile({"test", "local"})
+public class EmbeddedRedisServerConfig {
 
     @Value("${spring.redis.port}")
     private int redisPort;
     private RedisServer redisServer;
 
     @PostConstruct
-    public void runRedis() {
-
+    public void runRedis() throws IOException {
+        int port = isRedisServerRunning() ? findAvailablePort() : redisPort;
+        redisServer = new RedisServer(port);
+        redisServer.start();
+        log.info("내장 레디스 서버 실행(port: {})", port);
     }
 
     @PreDestroy
     public void stopRedis() {
-
+        if(!ObjectUtils.isEmpty(redisServer)) {
+            redisServer.stop();
+            log.info("내장 레디스 서버 종료");
+        }
     }
 
+    /**
+     * 내장 레디스 서버가 현재 실행중인지 확인
+     */
     private boolean isRedisServerRunning() throws IOException {
         return isRunning(executeGrepProcessCommand(redisPort));
     }
@@ -71,6 +81,6 @@ public class EmbeddedRedisConfig {
             log.error("isRunning ", e);
         }
 
-        return !StringUtils.hasText(pidInfo);
+        return !StringUtils.isEmpty(pidInfo.toString());
     }
 }

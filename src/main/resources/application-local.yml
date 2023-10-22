@@ -1,0 +1,11 @@
+bucket:
+  plan: local
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  redis:
+    host: localhost
+    port: 6379
