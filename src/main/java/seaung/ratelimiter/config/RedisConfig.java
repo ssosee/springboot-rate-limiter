@@ -16,9 +16,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @DependsOn({"embeddedRedisServerConfig"}) // 빈 초기화 순서 지정
 public class RedisConfig {
 
-    @Value("${spring.redis.host}")
+    @Value("${spring.data.redis.host}")
     private String redisHost;
-    @Value("${spring.redis.port}")
+    @Value("${spring.data.redis.port}")
     private int redisPort;
 
     /**
